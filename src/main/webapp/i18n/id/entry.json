@@ -1,0 +1,26 @@
+{
+    "blogApp": {
+        "entry" : {
+            "home": {
+                "title": "Entries",
+                "createLabel": "Buat Entry baru",
+                "createOrEditLabel": "Buat atau edit Entry",
+                "search": "Cari Entry"
+            },
+            "created": "Entry dengan id {{ param }} telah dibuat",
+            "updated": "Entry dengan id {{ param }} telah diperbaharui",
+            "deleted": "Entry dengan id {{ param }} telah dihapus",
+            "delete": {
+                "question": "Apakah anda yakin ingin menghapus Entry {{ id }}?"
+            },
+            "detail": {
+                "title": "Entry"
+            },
+            "title": "Title",
+            "content": "Content",
+            "date": "Date",
+            "blog": "Blog",
+            "tag": "Tag"
+        }
+    }
+}

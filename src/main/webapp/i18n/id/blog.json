@@ -1,0 +1,24 @@
+{
+    "blogApp": {
+        "blog" : {
+            "home": {
+                "title": "Blogs",
+                "createLabel": "Buat Blog baru",
+                "createOrEditLabel": "Buat atau edit Blog",
+                "search": "Cari Blog"
+            },
+            "created": "Blog dengan id {{ param }} telah dibuat",
+            "updated": "Blog dengan id {{ param }} telah diperbaharui",
+            "deleted": "Blog dengan id {{ param }} telah dihapus",
+            "delete": {
+                "question": "Apakah anda yakin ingin menghapus Blog {{ id }}?"
+            },
+            "detail": {
+                "title": "Blog"
+            },
+            "name": "Name",
+            "handle": "Handle",
+            "user": "User"
+        }
+    }
+}

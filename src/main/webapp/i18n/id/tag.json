@@ -1,0 +1,23 @@
+{
+    "blogApp": {
+        "tag" : {
+            "home": {
+                "title": "Tags",
+                "createLabel": "Buat Tag baru",
+                "createOrEditLabel": "Buat atau edit Tag",
+                "search": "Cari Tag"
+            },
+            "created": "Tag dengan id {{ param }} telah dibuat",
+            "updated": "Tag dengan id {{ param }} telah diperbaharui",
+            "deleted": "Tag dengan id {{ param }} telah dihapus",
+            "delete": {
+                "question": "Apakah anda yakin ingin menghapus Tag {{ id }}?"
+            },
+            "detail": {
+                "title": "Tag"
+            },
+            "name": "Name",
+            "entry": "Entry"
+        }
+    }
+}
