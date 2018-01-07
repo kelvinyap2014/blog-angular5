@@ -1,4 +1,13 @@
-# blog
+# Simple Blog - Angular 5, Spring Boot, JPA, MySQL, JHipster
+
+This sample application was inspired by [Matt Raible's JHipster Blog Demo](http://www.jhipster.tech/video-tutorial/).
+
+## Screenshot
+
+![](resources/doc/img/screenshot/blog-entry.png?raw=true)
+
+## Code generator
+
 This application was generated using JHipster 4.13.1, you can find documentation and help at [http://www.jhipster.tech/documentation-archive/v4.13.1](http://www.jhipster.tech/documentation-archive/v4.13.1).
 
 ## Development
