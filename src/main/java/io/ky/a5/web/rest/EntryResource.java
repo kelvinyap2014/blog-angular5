@@ -1,14 +1,14 @@
 package io.ky.a5.web.rest;
 
-import com.codahale.metrics.annotation.Timed;
-import io.ky.a5.domain.Entry;
+import static org.elasticsearch.index.query.QueryBuilders.queryStringQuery;
 
-import io.ky.a5.repository.EntryRepository;
-import io.ky.a5.repository.search.EntrySearchRepository;
-import io.ky.a5.web.rest.errors.BadRequestAlertException;
-import io.ky.a5.web.rest.util.HeaderUtil;
-import io.ky.a5.web.rest.util.PaginationUtil;
-import io.github.jhipster.web.util.ResponseUtil;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.List;
+import java.util.Optional;
+
+import javax.validation.Valid;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -16,18 +16,26 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
-import javax.validation.Valid;
-import java.net.URI;
-import java.net.URISyntaxException;
+import com.codahale.metrics.annotation.Timed;
 
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
-
-import static org.elasticsearch.index.query.QueryBuilders.*;
+import io.github.jhipster.web.util.ResponseUtil;
+import io.ky.a5.domain.Entry;
+import io.ky.a5.repository.EntryRepository;
+import io.ky.a5.repository.search.EntrySearchRepository;
+import io.ky.a5.security.SecurityUtils;
+import io.ky.a5.web.rest.errors.BadRequestAlertException;
+import io.ky.a5.web.rest.util.HeaderUtil;
+import io.ky.a5.web.rest.util.PaginationUtil;
 
 /**
  * REST controller for managing Entry.
@@ -44,7 +52,7 @@ public class EntryResource {
 
     private final EntrySearchRepository entrySearchRepository;
 
-    public EntryResource(EntryRepository entryRepository, EntrySearchRepository entrySearchRepository) {
+    public EntryResource(final EntryRepository entryRepository, final EntrySearchRepository entrySearchRepository) {
         this.entryRepository = entryRepository;
         this.entrySearchRepository = entrySearchRepository;
     }
@@ -58,13 +66,13 @@ public class EntryResource {
      */
     @PostMapping("/entries")
     @Timed
-    public ResponseEntity<Entry> createEntry(@Valid @RequestBody Entry entry) throws URISyntaxException {
-        log.debug("REST request to save Entry : {}", entry);
+    public ResponseEntity<Entry> createEntry(@Valid @RequestBody final Entry entry) throws URISyntaxException {
+        this.log.debug("REST request to save Entry : {}", entry);
         if (entry.getId() != null) {
             throw new BadRequestAlertException("A new entry cannot already have an ID", ENTITY_NAME, "idexists");
         }
-        Entry result = entryRepository.save(entry);
-        entrySearchRepository.save(result);
+        final Entry result = this.entryRepository.save(entry);
+        this.entrySearchRepository.save(result);
         return ResponseEntity.created(new URI("/api/entries/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
             .body(result);
@@ -81,13 +89,13 @@ public class EntryResource {
      */
     @PutMapping("/entries")
     @Timed
-    public ResponseEntity<Entry> updateEntry(@Valid @RequestBody Entry entry) throws URISyntaxException {
-        log.debug("REST request to update Entry : {}", entry);
+    public ResponseEntity<Entry> updateEntry(@Valid @RequestBody final Entry entry) throws URISyntaxException {
+        this.log.debug("REST request to update Entry : {}", entry);
         if (entry.getId() == null) {
             return createEntry(entry);
         }
-        Entry result = entryRepository.save(entry);
-        entrySearchRepository.save(result);
+        final Entry result = this.entryRepository.save(entry);
+        this.entrySearchRepository.save(result);
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, entry.getId().toString()))
             .body(result);
@@ -101,10 +109,10 @@ public class EntryResource {
      */
     @GetMapping("/entries")
     @Timed
-    public ResponseEntity<List<Entry>> getAllEntries(Pageable pageable) {
-        log.debug("REST request to get a page of Entries");
-        Page<Entry> page = entryRepository.findAll(pageable);
-        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/entries");
+    public ResponseEntity<List<Entry>> getAllEntries(final Pageable pageable) {
+        this.log.debug("REST request to get a page of Entries");
+		final Page<Entry> page = this.entryRepository.findByBlogUserLoginOrderByDateDesc(SecurityUtils.getCurrentUserLogin(), pageable);
+        final HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/entries");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
 
@@ -116,9 +124,9 @@ public class EntryResource {
      */
     @GetMapping("/entries/{id}")
     @Timed
-    public ResponseEntity<Entry> getEntry(@PathVariable Long id) {
-        log.debug("REST request to get Entry : {}", id);
-        Entry entry = entryRepository.findOneWithEagerRelationships(id);
+    public ResponseEntity<Entry> getEntry(@PathVariable final Long id) {
+        this.log.debug("REST request to get Entry : {}", id);
+        final Entry entry = this.entryRepository.findOneWithEagerRelationships(id);
         return ResponseUtil.wrapOrNotFound(Optional.ofNullable(entry));
     }
 
@@ -130,10 +138,10 @@ public class EntryResource {
      */
     @DeleteMapping("/entries/{id}")
     @Timed
-    public ResponseEntity<Void> deleteEntry(@PathVariable Long id) {
-        log.debug("REST request to delete Entry : {}", id);
-        entryRepository.delete(id);
-        entrySearchRepository.delete(id);
+    public ResponseEntity<Void> deleteEntry(@PathVariable final Long id) {
+        this.log.debug("REST request to delete Entry : {}", id);
+        this.entryRepository.delete(id);
+        this.entrySearchRepository.delete(id);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
     }
 
@@ -147,10 +155,10 @@ public class EntryResource {
      */
     @GetMapping("/_search/entries")
     @Timed
-    public ResponseEntity<List<Entry>> searchEntries(@RequestParam String query, Pageable pageable) {
-        log.debug("REST request to search for a page of Entries for query {}", query);
-        Page<Entry> page = entrySearchRepository.search(queryStringQuery(query), pageable);
-        HttpHeaders headers = PaginationUtil.generateSearchPaginationHttpHeaders(query, page, "/api/_search/entries");
+    public ResponseEntity<List<Entry>> searchEntries(@RequestParam final String query, final Pageable pageable) {
+        this.log.debug("REST request to search for a page of Entries for query {}", query);
+        final Page<Entry> page = this.entrySearchRepository.search(queryStringQuery(query), pageable);
+        final HttpHeaders headers = PaginationUtil.generateSearchPaginationHttpHeaders(query, page, "/api/_search/entries");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
 
