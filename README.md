@@ -43,7 +43,7 @@ The `yarn run` command will list all of the scripts available to run for this pr
 
 Service workers are commented by default, to enable them please uncomment the following code.
 
-* The service worker registering script in index.html
+* The service worker registering the script in index.html
 
 ```html
 <script>
@@ -59,7 +59,7 @@ Note: workbox creates the respective service worker and dynamically generate the
 
 ### Managing dependencies
 
-For example, to add [Leaflet][] library as a runtime dependency of your application, you would run following command:
+For example, to add [Leaflet][] library as a runtime dependency of your application, you would run the following command:
 
     yarn add --exact leaflet
 
@@ -77,7 +77,7 @@ Edit [src/main/webapp/content/css/vendor.css](src/main/webapp/content/css/vendor
 ~~~
 @import '~leaflet/dist/leaflet.css';
 ~~~
-Note: there are still few other things remaining to do for Leaflet that we won't detail here.
+Note: there are still a few other things remaining to do for Leaflet that we won't detail here.
 
 For further instructions on how to develop with JHipster, have a look at [Using JHipster in development][].
 
@@ -137,7 +137,7 @@ For more information, refer to the [Running tests page][].
 
 You can use Docker to improve your JHipster development experience. A number of docker-compose configuration are available in the [src/main/docker](src/main/docker) folder to launch required third party services.
 
-For example, to start a mysql database in a docker container, run:
+For example, to start a MySQL database in a docker container, run:
 
     docker-compose -f src/main/docker/mysql.yml up -d
 
@@ -146,7 +146,7 @@ To stop it and remove the container, run:
     docker-compose -f src/main/docker/mysql.yml down
 
 You can also fully dockerize your application and all the services that it depends on.
-To achieve this, first build a docker image of your app by running:
+To achieve this, first build a Docker image of your app by running:
 
     ./mvnw verify -Pprod dockerfile:build
 
